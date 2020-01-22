@@ -8,3 +8,10 @@ signal = signal(:,1);
 %remove outliers
 signal = rmoutliers(signal);
 plot(signal);
+
+%Adriannas idea for making notes
+sig_max = max(signal);
+
+%split up signal in to logical arrays for each range of notes
+A = ((signal > sig_max/5) & (signal < sig_max/2));
+B = ((signal < sig_max/5) );
