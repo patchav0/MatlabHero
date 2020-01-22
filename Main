@@ -15,3 +15,11 @@ sig_max = max(signal);
 %split up signal in to logical arrays for each range of notes
 A = ((signal > sig_max/5) & (signal < sig_max/2));
 B = ((signal < sig_max/5) );
+
+%*** To play sounds
+
+%The original signal
+sound(signal,fs)
+%Only when the note you want occurs
+sound((A.*signal),fs)
+
