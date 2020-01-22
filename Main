@@ -1,2 +1,10 @@
 % https://www.noiiz.com/sounds/instruments/72
 % http://www.angelfire.com/sc/wavsetc/index.html
+
+%read signal
+[signal,fs]=audioread('Piano.wav');
+%choose one column of the matrix if there are harmonies
+signal = signal(:,1);
+%remove outliers
+signal = rmoutliers(signal);
+plot(signal);
