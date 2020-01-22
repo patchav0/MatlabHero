@@ -1,25 +1,24 @@
-% https://www.noiiz.com/sounds/instruments/72
 % http://www.angelfire.com/sc/wavsetc/index.html
 
 %read signal
-[signal,fs]=audioread('Piano.wav');
+[audioIn,fs]=audioread('Piano.wav');
 %choose one column of the matrix if there are harmonies
-signal = signal(:,1);
+audioIn = audioIn(:,1);
 %remove outliers
-signal = rmoutliers(signal);
-plot(signal);
+%signal = rmoutliers(signal);
 
-%Adriannas idea for making notes
-sig_max = max(signal);
+% plot(signal);
+% sig_max = max(signal);
+% sig_min = min(signal);
 
-%split up signal in to logical arrays for each range of notes
-A = ((signal > sig_max/5) & (signal < sig_max/2));
-B = ((signal < sig_max/5) );
+[f0,idx] = pitch(audioIn,fs);
+subplot(2,1,1)
+plot(audioIn)
+ylabel('Amplitude')
 
-%*** To play sounds
+subplot(2,1,2)
+plot(idx,f0)
+ylabel('Pitch (Hz)')
+xlabel('Sample Number')
 
-%The original signal
-sound(signal,fs)
-%Only when the note you want occurs
-sound((A.*signal),fs)
-
+sound(f0,fs)
