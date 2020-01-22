@@ -4,10 +4,11 @@
 audioIn = audioIn(:,1);
 
 f0 = pitch(audioIn,fs);
-
-x = 1:1883;
+sampleSize = size(f0);
+sampleSize = sampleSize(:,1);
+x = 1:sampleSize;
 A = f0;
-TF = islocalmax(A,'MinSeparation',20);
+TF = islocalmax(A,'MinSeparation',round(sampleSize/92));
 plot(x,A,x(TF),A(TF),'r*')
 ylabel('Pitch (Hz)')
 xlabel('Sample Number')
