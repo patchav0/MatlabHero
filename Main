@@ -1,24 +1,13 @@
-% http://www.angelfire.com/sc/wavsetc/index.html
-
 %read signal
 [audioIn,fs]=audioread('Piano.wav');
 %choose one column of the matrix if there are harmonies
 audioIn = audioIn(:,1);
-%remove outliers
-%signal = rmoutliers(signal);
 
-% plot(signal);
-% sig_max = max(signal);
-% sig_min = min(signal);
+f0 = pitch(audioIn,fs);
 
-[f0,idx] = pitch(audioIn,fs);
-subplot(2,1,1)
-plot(audioIn)
-ylabel('Amplitude')
-
-subplot(2,1,2)
-plot(idx,f0)
+x = 1:1883;
+A = f0;
+TF = islocalmax(A,'MinSeparation',20);
+plot(x,A,x(TF),A(TF),'r*')
 ylabel('Pitch (Hz)')
 xlabel('Sample Number')
-
-sound(f0,fs)
