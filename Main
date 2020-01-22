@@ -23,3 +23,8 @@ sound(signal,fs)
 %Only when the note you want occurs
 sound((A.*signal),fs)
 
+%Local min function
+x = 1:100;
+A = (1-cos(2*pi*0.01*x)).*sin(2*pi*0.15*x);
+TF = islocalmin(A);
+plot(x,A,x(TF),A(TF),'r*')
