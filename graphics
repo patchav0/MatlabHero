@@ -1,0 +1,30 @@
+% we want to use 4 colors
+% Red: 15
+% Green: 17
+% Blue: 19
+% Yellow: 3
+% Gray: 21 (default)
+segments = 23;
+C = zeros(4,segments);
+C = C+21;
+for i = 1:segments
+    if i == 3%?????
+        C(1,i) = 15;
+    end
+    if i == 2 %?????
+        C(2,i) = 17;
+    end
+    if i == 7%?????
+        C(3,i) = 19;
+    end
+    if i == 19%?????
+        C(4,i) = 3;
+    end
+end
+clims = [0 22];
+imagesc(C,clims), colormap colorcube
+grid on 
+ax = gca;
+ax.GridAlpha = 1;
+set(gca,'ytick',0.5:4.5), set(gca,'xtick',0.5:23.5)
+xticklabels(''), yticklabels('')
