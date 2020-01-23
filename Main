@@ -3,12 +3,64 @@
 %choose one column of the matrix if there are harmonies
 audioIn = audioIn(:,1);
 
+
 f0 = pitch(audioIn,fs);
 sampleSize = size(f0);
 sampleSize = sampleSize(:,1);
-x = 1:sampleSize;
-A = f0;
-TF = islocalmax(A,'MinSeparation',round(sampleSize/92));
-plot(x,A,x(TF),A(TF),'r*')
-ylabel('Pitch (Hz)')
-xlabel('Sample Number')
+
+interval = round(sampleSize/23);
+
+%vector to store stuff
+cat = zeros(23,1);
+
+dog = 0;
+
+notes = 0;
+
+i = 1;
+while( i < sampleSize - (interval-1) )
+    y = f0(i:i+(interval-1),:);
+    ymax = max(y);
+    yavg = mean(y);
+    
+    if( yavg < ymax/2) 
+        cat(i:i+(interval-1),1) = 0;
+        dog = [dog; 0];
+    else
+       cat(i:i+(interval-1),1) = ymax;
+       notes = [notes;ymax];
+       dog = [dog; ymax];
+    end
+    i = i + (interval-1);
+    
+end
+dog = dog(2:end);
+
+plot(cat)
+
+notes = unique(notes);
+max_note = max(notes);
+min_note = min(notes(2:end));
+c = (max_note - min_note)/10; 
+
+display = ones(4,23)*21; 
+
+for j = 1:size(dog)
+    
+    n = dog(j,1)
+    switch true
+        
+        %red
+        case n <= c + min_note
+            display(1,j) = 15;
+            
+        %red and blue
+        case n > c + min_note && n 
+            display(1,j) = 15;
+ 
+        otherwise
+            disp('not working')
+    end
+end
+
+
