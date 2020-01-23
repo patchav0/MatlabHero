@@ -43,7 +43,12 @@ max_note = max(notes);
 min_note = min(notes(2:end));
 c = (max_note - min_note)/10; 
 
-display = ones(4,23)*21; 
+display = ones(4,23)*21;
+
+red = 15;
+blue = 19;
+green = 17;
+yellow = 3;
 
 for j = 1:size(dog)
     
@@ -51,16 +56,58 @@ for j = 1:size(dog)
     switch true
         
         %red
-        case n <= c + min_note
-            display(1,j) = 15;
+        case n > 0 && n <= c + min_note
+            display(1,j) = red;
             
         %red and blue
-        case n > c + min_note && n 
-            display(1,j) = 15;
- 
+        case (n > c + min_note && n <= 2*c + min_note)
+            display(1,j) = red;
+            display(2,j) = blue;
+            
+        %red and green
+        case (n > 2*c + min_note && n <= 3*c + min_note)
+            display(1,j) = red;
+            display(3,j) = green;
+            
+        %red and yellow
+        case (n > 3*c + min_note && n <= 4*c + min_note)
+            display(1,j) = red;
+            display(4,j) = yellow;
+            
+        %blue
+        case (n > 4*c + min_note && n <= 5*c + min_note)
+            display(2,j) = blue;
+
+        %blue and green
+        case (n > 5*c + min_note && n <= 6*c + min_note)
+            display(2,j) = blue;
+            display(3,j) = green;
+            
+        %blue and yellow
+        case (n > 6*c + min_note && n <= 7*c + min_note)
+            display(2,j) = blue;
+            display(4,j) = yellow;  
+       
+       %green
+       case (n > 7*c + min_note && n <= 8*c + min_note)
+            display(3,j) = green;
+        
+       %green and yellow
+       case (n > 8*c + min_note && n <= 9*c + min_note)
+            display(3,j) = green;
+            display(4,j) = yellow; 
+            
+        %yellow  
         otherwise
-            disp('not working')
+            display(4,j) = yellow; 
+            
     end
 end
+
+
+
+
+
+
 
 
