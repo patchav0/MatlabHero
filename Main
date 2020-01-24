@@ -1,17 +1,19 @@
 %read signal
-[audioIn,fs]=audioread('Piano.wav');
+[audioIn,fs]=audioread('KennyGLovingYou.wav');
 %choose one column of the matrix if there are harmonies
 audioIn = audioIn(:,1);
+
+song_length = 198;
 
 
 f0 = pitch(audioIn,fs);
 sampleSize = size(f0);
 sampleSize = sampleSize(:,1);
 
-interval = round(sampleSize/23);
+interval = round(sampleSize/song_length);
 
 %vector to store stuff
-cat = zeros(23,1);
+cat = zeros(song_length,1);
 
 dog = 0;
 
@@ -23,13 +25,13 @@ while( i < sampleSize - (interval-1) )
     ymax = max(y);
     yavg = mean(y);
     
-    if( yavg < ymax/2) 
+    if( yavg < ymax/2)
         cat(i:i+(interval-1),1) = 0;
         dog = [dog; 0];
     else
-       cat(i:i+(interval-1),1) = ymax;
-       notes = [notes;ymax];
-       dog = [dog; ymax];
+        cat(i:i+(interval-1),1) = ymax;
+        notes = [notes;ymax];
+        dog = [dog; ymax];
     end
     i = i + (interval-1);
     
@@ -38,12 +40,11 @@ dog = dog(2:end);
 
 plot(cat)
 
-notes = unique(notes);
 max_note = max(notes);
 min_note = min(notes(2:end));
-c = (max_note - min_note)/10; 
+c = (max_note - min_note)/10;
 
-display = ones(4,23)*21;
+display = ones(4,song_length)*21;
 
 red = 18;
 blue = 20;
@@ -55,62 +56,67 @@ for j = 1:size(dog)
     n = dog(j,1);
     switch true
         
-        %red
+        %yellow
         case n > 0 && n <= c + min_note
-            display(1,j) = red;
+            display(4,j) = yellow;
             
-        %red and blue
+            %green and yellow
         case (n > c + min_note && n <= 2*c + min_note)
-            display(1,j) = red;
-            display(2,j) = blue;
+            display(3,j) = green;
+            display(4,j) = yellow;
             
-        %red and green
+            %green
         case (n > 2*c + min_note && n <= 3*c + min_note)
-            display(1,j) = red;
             display(3,j) = green;
             
-        %red and yellow
+            %blue and yellow
         case (n > 3*c + min_note && n <= 4*c + min_note)
+            display(2,j) = blue;
+            display(4,j) = yellow;
+            
+            %blue and green
+        case (n > 4*c + min_note && n <= 5*c + min_note)
+            display(2,j) = blue;
+            display(3,j) = green;
+            
+            %blue
+        case (n > 5*c + min_note && n <= 6*c + min_note)
+            display(2,j) = blue;
+            
+            
+            %red and yellow
+        case (n > 6*c + min_note && n <= 7*c + min_note)
             display(1,j) = red;
             display(4,j) = yellow;
             
-        %blue
-        case (n > 4*c + min_note && n <= 5*c + min_note)
-            display(2,j) = blue;
-
-        %blue and green
-        case (n > 5*c + min_note && n <= 6*c + min_note)
-            display(2,j) = blue;
+            %red and green
+        case (n > 7*c + min_note && n <= 8*c + min_note)
+            display(1,j) = red;
             display(3,j) = green;
             
-        %blue and yellow
-        case (n > 6*c + min_note && n <= 7*c + min_note)
-            display(2,j) = blue;
-            display(4,j) = yellow;  
-       
-       %green
-       case (n > 7*c + min_note && n <= 8*c + min_note)
-            display(3,j) = green;
-        
-       %green and yellow
-       case (n > 8*c + min_note && n <= 9*c + min_note)
-            display(3,j) = green;
-            display(4,j) = yellow; 
             
-        %yellow  
-        otherwise
-            display(4,j) = yellow; 
+            %red and blue
+        case (n > 8*c + min_note && n <= 9*c + min_note)
+            display(1,j) = red;
+            display(2,j) = blue;
+            
+            %red
+        case (n > 9*c + min_note && n <= max_note)
+            display(1,j) = red;
             
     end
+    
+    clims = [0 22];
+    
+    imagesc(display, clims), colormap colorcube
+    colorbar
+    grid on
+    ax = gca;
+    ax.GridAlpha = 1;
+    set(gca,'ytick',0.5:4.5), set(gca,'xtick',0.5:23.5)
+    xticklabels(''), yticklabels('')
+    
+    
 end
-
-clims = [0 22];
-imagesc(display, clims), colormap colorcube
-colorbar
-grid on 
-ax = gca;
-ax.GridAlpha = 1;
-set(gca,'ytick',0.5:4.5), set(gca,'xtick',0.5:23.5)
-xticklabels(''), yticklabels('')
 
 
