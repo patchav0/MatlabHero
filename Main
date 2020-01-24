@@ -1,10 +1,11 @@
 http://www.angelfire.com/music2/jd2/Benton.htm
+clear
 %read signal
-[audioIn,fs]=audioread('KennyGLovingYou.wav');
+[audioIn,fs]=audioread('KennyGMyHeartWillGoOn.wav');
 %choose one column of the matrix if there are harmonies
 audioIn = audioIn(:,1);
 
-song_length = 198;
+song_length = 4*60 + 25;
 
 
 f0 = pitch(audioIn,fs);
@@ -39,34 +40,31 @@ while( i < sampleSize - (interval-1) )
 end
 dog = dog(2:end);
 
-%plot(cat)
+plot(cat)
 
 max_note = max(notes);
 min_note = min(notes(2:end));
 c = (max_note - min_note)/10;
 
-window = 25;
+display = ones(4,song_length+21)*21;
 
-display = ones(4,song_length + (2*window))*21;
+red = 15;
+blue = 19;
+green = 17;
+yellow = 3;
 
-red = 18;
-blue = 20;
-green = 19;
-yellow = 1.7;
-grey = 21;
-
-for q = 1:size(dog)
-     j = q + window;
-    n = dog(q,1);
+for j = 1:size(dog)
+    
+    n = dog(j,1);
     switch true
         
         %yellow
         case n > 0 && n <= c + min_note
-            display(4,j  ) = yellow;
+            display(4,j) = yellow;
             
             %green and yellow
         case (n > c + min_note && n <= 2*c + min_note)
-            display(3,j ) = green;
+            display(3,j) = green;
             display(4,j) = yellow;
             
             %green
@@ -107,27 +105,24 @@ for q = 1:size(dog)
             %red
         case (n > 9*c + min_note && n <= max_note)
             display(1,j) = red;
-            
     end
-    
-    
-    
-    
 end
 
-
-
-
-
-k = 1;
-     while(k < song_length + window + 1)
-        clims = [0 22];
-        imagesc(display(:,k:k+window), clims), colormap colorcube
-        grid on
-        ax = gca;
-        ax.GridAlpha = 1;
-        set(gca,'ytick',0.5:4.5), set(gca,'xtick',0.5:23.5)
-        xticklabels(''), yticklabels('')
-        pause(.05);
-        k = k + 1;
-     end
+for i = 1:song_length+21
+    gray = ones(4,20)*21;
+    if i <= 20
+        realDisp = [gray(:,1:20-i) display(1:4, 1:i)];
+    else
+        realDisp = display(1:4, i-19:i);
+    end
+    
+    clims = [0 22];
+    imagesc(realDisp, clims), colormap colorcube
+    grid on
+    ax = gca;
+    ax.GridAlpha = 1;
+    set(gca,'ytick',0.5:4.5), set(gca,'xtick',0.5:20.5)
+    xticklabels(''), yticklabels('')
+    xline(3.5,'LineWidth', 2);
+    pause(0.05);
+end
