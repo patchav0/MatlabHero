@@ -1,3 +1,4 @@
+http://www.angelfire.com/music2/jd2/Benton.htm
 %read signal
 [audioIn,fs]=audioread('KennyGLovingYou.wav');
 %choose one column of the matrix if there are harmonies
@@ -119,7 +120,7 @@ end
 
 
 k = 1;
-     while(k < song_length + window)
+     while(k < song_length + window + 1)
         clims = [0 22];
         imagesc(display(:,k:k+window), clims), colormap colorcube
         grid on
