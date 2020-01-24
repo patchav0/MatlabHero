@@ -38,31 +38,34 @@ while( i < sampleSize - (interval-1) )
 end
 dog = dog(2:end);
 
-plot(cat)
+%plot(cat)
 
 max_note = max(notes);
 min_note = min(notes(2:end));
 c = (max_note - min_note)/10;
 
-display = ones(4,song_length)*21;
+window = 25;
+
+display = ones(4,song_length + (2*window))*21;
 
 red = 18;
 blue = 20;
 green = 19;
 yellow = 1.7;
+grey = 21;
 
-for j = 1:size(dog)
-    
-    n = dog(j,1);
+for q = 1:size(dog)
+     j = q + window;
+    n = dog(q,1);
     switch true
         
         %yellow
         case n > 0 && n <= c + min_note
-            display(4,j) = yellow;
+            display(4,j  ) = yellow;
             
             %green and yellow
         case (n > c + min_note && n <= 2*c + min_note)
-            display(3,j) = green;
+            display(3,j ) = green;
             display(4,j) = yellow;
             
             %green
@@ -106,17 +109,24 @@ for j = 1:size(dog)
             
     end
     
-    clims = [0 22];
     
-    imagesc(display, clims), colormap colorcube
-    colorbar
-    grid on
-    ax = gca;
-    ax.GridAlpha = 1;
-    set(gca,'ytick',0.5:4.5), set(gca,'xtick',0.5:23.5)
-    xticklabels(''), yticklabels('')
     
     
 end
 
 
+
+
+
+k = 1;
+     while(k < song_length + window)
+        clims = [0 22];
+        imagesc(display(:,k:k+window), clims), colormap colorcube
+        grid on
+        ax = gca;
+        ax.GridAlpha = 1;
+        set(gca,'ytick',0.5:4.5), set(gca,'xtick',0.5:23.5)
+        xticklabels(''), yticklabels('')
+        pause(.05);
+        k = k + 1;
+     end
